@@ -1,18 +1,20 @@
 import Rx from 'rx';
+import _  from 'lodash';
 
-export function dispatch(source) {
-    source.onNext();
+export function dispatch(source, ...args) {
+    source.onNext(args);
 }
 
-export function makeDispatcher(source) {
+export function makeDispatcher(source, ...args) {
     return function() {
-        source.onNext();
+        dispatch(source, ...args);
     };
 }
 
 export function makeSink(fn) {
-    return function() {
-        return fn;
+    var partialFn = _.curryRight(fn);
+    return function(args) {
+        return args === undefined ? fn : partialFn(...args);
     };
 }
 
