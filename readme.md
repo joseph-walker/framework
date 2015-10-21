@@ -63,7 +63,7 @@ The resultant stream is equivalent to emitting state-modifying functions on a si
 ## Using the State
 
 Once all of the sinks have been registered, the application state can be subscribed
-to by call `start()`, which accepts an initial state and a subscribe function, e.g.
+to by calling `start()`, which accepts an initial state and a subscribe function, e.g.
 
 ```
 myApp.start(myInitialState, function(state) {
