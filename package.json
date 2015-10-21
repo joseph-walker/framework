@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babelify": "^6.4.0",
     "lodash": "^3.10.1",
     "rx": "^4.0.6"
   },
