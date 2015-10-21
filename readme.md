@@ -1,7 +1,6 @@
 # Rx FRP Library - Readme
 
-This is a simple utility library that bridges Rx streams a simple Function Reactive
-workflow for integration with React or other view libraries.
+This is a simple utility library that bridges Rx streams into a simple Functional Reactive workflow for integration with React or other view libraries.
 
 The library exposes an FRP style with a single application state. Events are encapsulated and transformed into functions which operate and return a new state onto a 'state' stream that can be subscribed to and rendered in various ways.
 
