@@ -14,7 +14,6 @@ object and Rx streams.
 import {makeApp} from 'lib/framework.js';
 
 var myApp = makeApp();
-
 ```
 
 ## Sources and Sinks
@@ -27,7 +26,6 @@ the Rx map function, we can turn a source into a sink by passing in a curried fu
 ```
 var mySource = myApp.source();
 var mySink   = mySource.map(function(state, anArgument) { ... });
-
 ```
 
 A `makeSink` function is exposed which will automatically curry the supplied function.
@@ -41,14 +39,12 @@ var myFunction = function(state, anArgument) {
 
 var mySource = myApp.source();
 var mySink   = mySource.map(makeSink(myFunction));
-
 ```
 
 One a sink stream is created, expose it to the application through the `sink` function.
 
 ```
 myApp.sink(mySink);
-
 ```
 
 `dispatch()` emits arguments to the source stream which are curried into the sink stream's given function. This results in a stream of functions that accept state and return a new state. The following diagram visualizes the process:
@@ -74,7 +70,6 @@ to by call `start()`, which accepts an initial state and a subscribe function, e
 myApp.start(myInitialState, function(state) {
     // Do stuff with the current state
 })
-
 ```
 
 ## Example
@@ -112,5 +107,4 @@ Outputs:
 { counter: 6 }
 { counter: 8 } <- 500 ms Later
 */
-
 ```
