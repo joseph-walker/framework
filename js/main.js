@@ -1,11 +1,17 @@
 import * as framework from './lib/framework.js';
 
+window.framework = framework;
+
 function addSomeNumber(state, number) {
     state.numbers.push(number); return state;
 }
 
 function deQueueSomeNumber(state) {
-    return state.numbers.slice(1);
+    if(state.numbers.length >= 1) {
+      state.numbers = state.numbers.slice(1);
+    }
+
+    return state;
 }
 
 var app                 = framework.makeApp();
@@ -18,15 +24,19 @@ var deQueueSomeNumberSource = app.source();
 var deQueueSomeNumberSink   = deQueueSomeNumberSource.map(framework.makeSink(deQueueSomeNumber));
 app.sink(deQueueSomeNumberSink);
 
-async function onchange(state) {
+async function onChange(state) {
   if(state.numbers.length === 0){
+    //render loading
+    console.log('loading...');
+    //get new numbers, but just once
     await getNewNumbers();
+  } else {
+    //render app
+    console.log(JSON.stringify(state));
   }
-
-  console.log(state.numbers);
 }
 
-app.start({numbers: []}, onchange);
+app.start({numbers: []}, onChange);
 
 function getNewNumbers() {
   fetch('/numbers.json')
@@ -37,6 +47,11 @@ function getNewNumbers() {
   });
 }
 
-setInterval(() => {
-  framework.dispatch(deQueueSomeNumber);
-}, 1000);
+var button = document.createElement('button');
+
+button.textContent = 'Consume Number';
+button.onclick = () => {
+  framework.dispatch(deQueueSomeNumberSource);
+};
+
+document.body.appendChild(button);
