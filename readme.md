@@ -40,7 +40,7 @@ var mySource = myApp.source();
 var mySink   = mySource.map(makeSink(myFunction));
 ```
 
-One a sink stream is created, expose it to the application through the `sink` function.
+Once a sink stream is created, expose it to the application through the `sink` function.
 
 ```
 myApp.sink(mySink);
@@ -56,7 +56,7 @@ All of the sinks registered to the application are combined into a single Rx str
 
 ![Combining Sinks](./doc/img/Sinks.png)
 
-The resultant stream is equivalent to emitting state-modifying functions on a single stream that can be subscribed to. From there, the state can be modified in a non-destructive way us the `Rx.Observable.scan()` function, which is similar to funcitonally composing every emitted state modification function as they arrive.
+The resultant stream is equivalent to emitting state-modifying functions on a single stream that can be subscribed to. From there, the state can be modified in a non-destructive way us the `Rx.Observable.scan()` function, which is similar to functionally composing every emitted state modification function as they arrive.
 
 ![Determining State](./doc/img/State.png)
 
