@@ -30,6 +30,14 @@ export function makeApp() {
         },
         sink: function(observable) {
             sinks.push(observable);
+            
+            return this;
+        },
+        directlySink: function(fn) {
+            var source = this.source();
+            this.sink(source.map(makeSink(fn)));
+            
+            return source;
         },
         start: function(initialState, fn) {
             var state = Rx.Observable

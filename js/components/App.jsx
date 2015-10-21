@@ -2,6 +2,7 @@ import React                      from 'react';
 import increment                  from 'actions/increment.js';
 import decrement                  from 'actions/decrement.js';
 import incrementBy                from 'actions/incrementBy.js';
+import incrementLater             from 'actions/incrementLater.js';
 import {dispatch, makeDispatcher} from 'lib/framework.js';
 
 export default class App extends React.Component {    
@@ -18,8 +19,8 @@ export default class App extends React.Component {
                     Add One
                 </button>
                 <button
-                    onClick={makeDispatcher(incrementBy, 4)}>
-                    Add Four
+                    onClick={makeDispatcher(incrementLater)}>
+                    Add One Later
                 </button>
                 <button
                     onClick={makeDispatcher(decrement)}>
