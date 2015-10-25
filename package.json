@@ -1,8 +1,8 @@
 {
   "name": "friar",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An Rx.js wrapper for simple applications",
-  "main": "index.js",
+  "main": "./dist/framework.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

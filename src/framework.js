@@ -1,17 +1,17 @@
-import Rx from 'rx';
-import _  from 'lodash';
+var Rx = require('rx');
+var _  = require('lodash');
 
-export function dispatch(source, ...args) {
+module.exports.dispatch = function dispatch(source, ...args) {
     source.onNext(args);
 }
 
-export function makeDispatcher(source, ...args) {
+module.exports.makeDispatcher = function makeDispatcher(source, ...args) {
     return function() {
         dispatch(source, ...args);
     };
 }
 
-export function makeSink(fn) {
+module.exports.makeSink = function makeSink(fn) {
     var partialFn = _.curryRight(fn);
     return function(args) {
         // If we're given a single argument not in an list, make it into a singleton
@@ -22,7 +22,7 @@ export function makeSink(fn) {
     };
 }
 
-export function makeApp() {
+module.exports.makeApp = function makeApp() {
     var sinks = [];
     var updateState = function(state, fn) {
         return fn(state);
