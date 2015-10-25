@@ -3,7 +3,7 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: {
-        app: './js/index.js'
+        index: './src/index.js'
     },
     output: {
         path: './',
@@ -14,7 +14,7 @@ module.exports = {
         'rx': 'Rx'
     },
     resolve: {
-        root: path.resolve('./js')
+        root: path.resolve('./src')
     },
     module: {
         loaders: [
@@ -28,4 +28,4 @@ module.exports = {
             }
         ]
     }
-}
+};
