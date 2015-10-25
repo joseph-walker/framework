@@ -3,17 +3,14 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: {
-        app: './js/main.js'
+        app: './js/index.js'
     },
     output: {
-        path: './build',
-        publicPath: "/build/",
-        filename: 'bundle.js'
+        path: './',
+        filename: 'index.js'
     },
     externals: {
         'lodash': '_',
-        'react': 'React',
-        'react-dom': 'ReactDOM',
         'rx': 'Rx'
     },
     resolve: {
