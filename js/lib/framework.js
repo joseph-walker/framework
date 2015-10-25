@@ -14,6 +14,10 @@ export function makeDispatcher(source, ...args) {
 export function makeSink(fn) {
     var partialFn = _.curryRight(fn);
     return function(args) {
+        // If we're given a single argument not in an list, make it into a singleton
+        if (args !== undefined && !Array.isArray(args))
+            args = [args];
+            
         return args === undefined ? fn : partialFn(...args);
     };
 }

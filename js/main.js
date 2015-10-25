@@ -1,42 +1,55 @@
 import * as framework from './lib/framework.js';
 
-function addSomeNumber(state, number) {
+// Pure State Manipulations
+function pushNumberToState(state, number) {
     state.numbers.push(number); return state;
 }
 
-function deQueueSomeNumber(state) {
-    return state.numbers.slice(1);
+function shiftNumberFromState(state) {
+    if (state.numbers.length <= 1) {
+        framework.dispatch(getMoreNumbers);
+    }
+    
+    return {
+        numbers: state.numbers.slice(1)
+    };
 }
 
-var app                 = framework.makeApp();
-
-var addSomeNumberSource = app.source();
-var addSomeNumberSink   = addSomeNumberSource.map(framework.makeSink(addSomeNumber));
-app.sink(addSomeNumberSink);
-
-var deQueueSomeNumberSource = app.source();
-var deQueueSomeNumberSink   = deQueueSomeNumberSource.map(framework.makeSink(deQueueSomeNumber));
-app.sink(deQueueSomeNumberSink);
-
-async function onchange(state) {
-  if(state.numbers.length === 0){
-    await getNewNumbers();
-  }
-
-  console.log(state.numbers);
+function getNumbers() {
+    return fetch('/numbers.json')
+        .then((response) => response.json());
 }
 
-app.start({numbers: []}, onchange);
+// App Delcaration
+var app = framework.makeApp();
 
-function getNewNumbers() {
-  fetch('/numbers.json')
-    .then(function(response) {
-      return response.json()
-    }).then(function(numbers) {
-    numbers.map(number => framework.dispatch(addSomeNumberSource, number));
-  });
-}
+// Sources & Sinks
+var getMoreNumbers = app.source();
+var getMoreNumbersSink =
+    getMoreNumbers
+        .flatMapLatest(() => {
+            return Rx.Observable.fromPromise(getNumbers());
+        })
+        .flatMap((numbers) => {
+            return Rx.Observable.from(numbers);
+        })
+        .map(framework.makeSink(pushNumberToState));
+    
+var shiftNumberOnInterval = Rx.Observable.interval(1000);
+var shiftNumberSink =
+    shiftNumberOnInterval
+        .map(() => framework.makeSink(shiftNumberFromState));
+        
+// Register the sinks
+app.sink(getMoreNumbersSink);
+app.sink(shiftNumberSink);
 
-setInterval(() => {
-  framework.dispatch(deQueueSomeNumber);
-}, 1000);
+// Initial State
+var initialState = {
+    numbers: []
+};
+
+// Application
+app.start(initialState, (state) => {
+    console.log(state.numbers);
+});
