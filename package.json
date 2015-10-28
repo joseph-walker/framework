@@ -1,6 +1,6 @@
 {
   "name": "friar",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An Rx.js wrapper for simple applications",
   "main": "./dist/framework.js",
   "scripts": {
@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^3.10.1",
     "rx": "^4.0.6"
   },
   "devDependencies": {
