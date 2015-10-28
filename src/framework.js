@@ -55,6 +55,23 @@ function makeApp() {
             
             return source;
         },
+        sinkAndThen: function(fnNow, promiseGenerator, fnLater) {
+            var source    = this.source();
+            var sinkNow   = makeSink(fnNow);
+            var sinkLater = makeSink(fnLater);
+            
+            app.sink(
+                sinkNow
+            );
+            
+            app.sink(
+                source
+                    .flatMapLatest(args => Rx.Observable.fromPromise(promiseGenerator(args)))
+                    .map(sinkLater)
+            );
+            
+            return source;
+        },
         start: function(initialState, fn) {
             var state = Rx.Observable
                 .merge(sinks)
