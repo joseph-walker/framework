@@ -10,7 +10,6 @@ module.exports = {
         filename: 'index.js'
     },
     externals: {
-        'lodash': '_',
         'rx': 'Rx'
     },
     resolve: {
