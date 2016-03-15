@@ -24,14 +24,14 @@ function makeDispatcher(source) {
 
 /**
  * Provides a function that partially applies the given function
- * that accepts n arguments, by calling it with an array of arguments [2, 3, ... n] arguments, 
+ * that accepts n arguments, by calling it with an array of arguments [2, 3, ... n] arguments,
  * and then returning a function closed over that accepts the 1st argument and evaluates.
  * Since the source has to dispatch its arguments via an array, the simplest way to accept
  * the arguments to curry is an array.
  *
  * The function called from `makeSink` is called internally, so this less-than-pretty API
  * of passing arguments via array is never truly exposed to the end user.
- * 
+ *
  * @param  {Function} fn Function to 'curry'
  * @return {Function}    Function that will be dispatched
  */
@@ -67,8 +67,21 @@ function makeApp() {
 
             return source;
         },
+        sinkAndThen: function sinkAndThen(fnNow, promiseGenerator, fnLater) {
+            var source = this.source();
+            var sinkNow = makeSink(fnNow);
+            var sinkLater = makeSink(fnLater);
+
+            app.sink(sinkNow);
+
+            app.sink(source.flatMapLatest(function (args) {
+                return Rx.Observable.fromPromise(promiseGenerator(args));
+            }).map(sinkLater));
+
+            return source;
+        },
         start: function start(initialState, fn) {
-            var state = Rx.Observable.merge(sinks).scan(updateState, initialState).startWith(initialState);
+            var state = Rx.Observable.merge(sinks).scan(updateState, initialState);
 
             return state.subscribe(fn);
         }
